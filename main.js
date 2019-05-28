@@ -1,16 +1,63 @@
-var x1 = 0;
-var y1 = 0;
+var img = new Image();
+img.src = 'walls.png';
 var i1 = 0;
 var z1 = 0;
-var x2 = 300;
-var y2 = 300;
-var i2 = 3;
-var z2 = 3;
+var x1 = z1 * 100;
+var y1 = i1 * 100;
+var i2 = 6;
+var z2 = 6;
+var x2 = z2*100;
+var y2 = i2*100;
+var my1 = y1;
+var my2 = y2;
+var mx1 = x1;
+var mx2 = x2;
+var keyblack = true;
+var keyblack_x;
+var keyblack_y;
+var keygreen = true;
+var keygreen_x;
+var keygreen_y;
 var motion = 0;
 var pos = 0;
-var s = [[0,1,0,0],[0,1,0,1],[0,0,0,1],[1,1,0,0]];
+var s = [[0,0,0,1,0,2,1],[1,1,0,1,0,1,1],[0,0,0,0,0,1,0],[1,1,1,1,1,1,0],[3,1,0,0,0,0,0],[0,0,0,0,0,1,0],[1,1,1,1,0,1,0]];
 var canvas = document.getElementById('c1');
+canvas.width = s[0].length * 100;
+canvas.height = s.length * 100;
 var ctx = canvas.getContext('2d');
+	for (var y = 0; y < s.length; y++) {
+		for (var t = 0; t < s[y].length; t++) {
+			if (s[y][t] == 1){
+				square_(y,t);
+			}
+			if (s[y][t] == 2) {
+				keyblack_x = t*100;
+				keyblack_y = y*100;
+				ctx.fillStyle = 'Gray';
+				ctx.fillRect(t*100,y*100,100,100);
+			}
+			if (s[y][t] == 3) {
+				keygreen_x = t*100;
+				keygreen_y = y*100;
+				ctx.fillStyle = 'SeaGreen';
+				ctx.fillRect(t*100,y*100,100,100);
+			}
+		}
+	}
+
+function square_(){
+	ctx.fillStyle = 'brown';
+	ctx.fillRect(t*100,y*100,100,100);
+	ctx.strokeStyle = 'black';
+	ctx.fillStyle = 'black';
+	ctx.strokeRect(t*100,y*100,100,100);
+	ctx.fillRect(t*100,y*100 + 33, 100,1);
+	ctx.fillRect(t*100,y*100 + 66, 100,1);
+	ctx.fillRect(t*100+58,y*100,1,33);
+	ctx.fillRect(t*100+58,y*100+66,1,33);
+	ctx.fillRect(t*100+30,y*100+33,1,33);
+	ctx.fillRect(t*100+80,y*100+33,1,33);
+}
 
 function sh(keyCode) {
 	if ((keyCode*1 == 97)||(keyCode*1 == 1092)||(keyCode*1 == 100)||(keyCode*1 == 1074)){
@@ -31,12 +78,16 @@ function sh(keyCode) {
 			z2++;
 			pos = '-';
 		};
-		if ((z1 < s[i1].length)&&(z1>=0)&&(s[i1][z1] == 0)) {
+		if ((z1 < s[i1].length)&&(z1>=0)&&(s[i1][z1] != 1)) {
+			my1 = y1;
+			mx1 = x1;
 			x1 += motion;
 		} else	if(pos == '+'){
 					z1++;
 			    }else {z1--}
-		if ((z2 < s[i1].length)&&(z2>=0)&&(s[i2][z2] == 0)) {
+		if ((z2 < s[i1].length)&&(z2>=0)&&(s[i2][z2] != 1)) {
+			my2 = y2;
+			mx2 = x2;
 			x2 += motion;
 		} else	if(pos == '+'){
 					z2++;
@@ -55,35 +106,47 @@ function sh(keyCode) {
 			i2++;
 			pos = '-';
 		};
-		if ((i1 < s.length)&&(i1>=0)&&(s[i1][z1] == 0)) {
+		if ((i1 < s.length)&&(i1>=0)&&(s[i1][z1] != 1)) {
+			mx1 = x1;
+			my1 = y1;
 			y1 += motion;
 		} else	if(pos == '+'){
 					i1++;
 			    }else {i1--}
-		if ((i2 < s.length)&&(i2>=0)&&(s[i2][z2] == 0)) {
+		if ((i2 < s.length)&&(i2>=0)&&(s[i2][z2] != 1)) {
+			mx2 = x2;
+			my2 = y2;
 			y2 += motion;
 		} else	if(pos == '+'){
 					i2++;
 			    }else {i2--}
 	}
 }
-
 setInterval(function(){
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	if (s[i1][z1] == 2) {
+		keyblack = false;
+	}
+	if (keyblack == true) {
+		ctx.fillStyle = 'Gray';
+		ctx.fillRect(keyblack_x,keyblack_y,100,100);
+	}
+	if (s[i2][z2] == 3) {
+		keygreen = false;
+	}
+	if (keygreen == true) {
+		ctx.fillStyle = 'SeaGreen';
+		ctx.fillRect(keygreen_x,keygreen_y,100,100);
+	}
+	ctx.clearRect(mx1, my1, 100, 100);
+	ctx.clearRect(mx2, my2, 100, 100);
+	mx1 = x1;
+	my1 = y1;
+	my2 = y2;
+	mx2 = x2;
+	ctx.clearRect(x1, y1, 100, 100);
+	ctx.clearRect(x2, y2, 100, 100);
 	ctx.fillStyle = 'black';
 	ctx.fillRect(x1,y1,100,100);
 	ctx.fillStyle = 'green';
-	ctx.fillRect(x2,y2,100,100);	
-
-	ctx.fillStyle = 'red';
-	for (var y = 0; y < s.length; y++) {
-		for (var t = 0; t < s[y].length; t++) {
-			if (s[y][t] == 1){
-				ctx.fillRect(t*100,y*100,100,100);
-			}
-		}
-	}
-	if ((y1 == 0)&&(y2 == 0)&&(x1 == 300)&&(x2 == 300)) {
-		alert('Вы выйграли!');
-	}
-},50);
+	ctx.fillRect(x2,y2,100,100);
+},20);
