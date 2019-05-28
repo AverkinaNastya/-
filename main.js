@@ -18,15 +18,21 @@ var keyblack_y;
 var keygreen = true;
 var keygreen_x;
 var keygreen_y;
+var doorblack = true;
+var doorblack_x;
+var doorblack_y;
+var doorgreen = true;
+var doorgreen_x;
+var doorgreen_y;
 var motion = 0;
 var pos = 0;
-var s = [[0,0,0,1,0,2,1],
+var s = [[4,0,0,1,0,2,1],
 		 [1,1,0,1,0,1,1],
 		 [0,0,0,0,0,1,0],
 		 [1,1,1,1,1,1,0],
 		 [3,1,0,0,0,0,0],
 		 [0,0,0,0,0,1,0],
-		 [1,1,1,1,0,1,0]];
+		 [1,1,1,1,5,1,0]];
 var canvas = document.getElementById('c1');
 canvas.width = s[0].length * 100;
 canvas.height = s.length * 100;
@@ -46,6 +52,18 @@ var ctx = canvas.getContext('2d');
 				keygreen_x = t*100;
 				keygreen_y = y*100;
 				ctx.fillStyle = 'SeaGreen';
+				ctx.fillRect(t*100,y*100,100,100);
+			}
+			if (s[y][t] == 4) {
+				doorblack_x = t * 100;
+				doorblack_y = y * 100;
+				ctx.fillStyle = 'LightSlateGray';
+				ctx.fillRect(t*100,y*100,100,100);
+			}
+			if (s[y][t] == 5) {
+				doorgreen_x = t * 100;
+				doorgreen_y = y * 100;
+				ctx.fillStyle = 'Lime';
 				ctx.fillRect(t*100,y*100,100,100);
 			}
 		}
@@ -142,6 +160,20 @@ setInterval(function(){
 	if (keygreen == true) {
 		ctx.fillStyle = 'SeaGreen';
 		ctx.fillRect(keygreen_x,keygreen_y,100,100);
+	}
+	if (keyblack == false) {
+		doorblack = false;
+	}
+	if (doorblack == true) {
+		ctx.fillStyle = 'LightSlateGray';
+		ctx.fillRect(doorblack_x,doorblack_y,100,100);
+	}
+	if (keygreen == false) {
+		doorgreen = false;
+	}
+	if (doorgreen == true) {
+		ctx.fillStyle = 'Lime';
+		ctx.fillRect(doorgreen_x,doorgreen_y,100,100);
 	}
 	ctx.clearRect(mx1, my1, 100, 100);
 	ctx.clearRect(mx2, my2, 100, 100);
