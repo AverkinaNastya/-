@@ -37,6 +37,7 @@ var canvas = document.getElementById('c1');
 canvas.width = s[0].length * 100;
 canvas.height = s.length * 100;
 var ctx = canvas.getContext('2d');
+
 	for (var y = 0; y < s.length; y++) {
 		for (var t = 0; t < s[y].length; t++) {
 			if (s[y][t] == 1){
