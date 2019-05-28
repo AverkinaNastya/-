@@ -79,7 +79,7 @@ setInterval(function(){
 	for (var y = 0; y < s.length; y++) {
 		for (var t = 0; t < s[y].length; t++) {
 			if (s[y][t] == 1){
-				fillRect(t*100,i*100,100,100);
+				ctx.fillRect(t*100,y*100,100,100);
 			}
 		}
 	}
