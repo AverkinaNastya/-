@@ -76,10 +76,13 @@ setInterval(function(){
 	ctx.fillRect(x2,y2,100,100);	
 
 	ctx.fillStyle = 'red';
-	ctx.fillRect(100,0,100,100);
-	ctx.fillRect(100,100,100,100);
-	ctx.fillRect(0,300,200,100);
-	ctx.fillRect(300,100,100,200);
+	for (var y = 0; y < s.length; y++) {
+		for (var t = 0; t < s[y].length; t++) {
+			if (s[y][t] == 1){
+				fillRect(t*100,i*100,100,100);
+			}
+		}
+	}
 	if ((y1 == 0)&&(y2 == 0)&&(x1 == 300)&&(x2 == 300)) {
 		alert('Вы выйграли!');
 	}
