@@ -1,5 +1,9 @@
 var img = new Image();
 img.src = 'walls.png';
+var girlblack = new Image();
+girlblack.src = 'girlblack1.png';
+var girlgreen = new Image();
+girlgreen.src = 'girlgreen1.png';  
 var i1 = 0;
 var z1 = 0;
 var x1 = z1 * 100;
@@ -97,11 +101,15 @@ function sh(keyCode) {
 			z1--;
 			z2--;
 			pos = '+';
+			girlblack.src = 'girlblack4.png';
+			girlgreen.src = 'girlgreen4.png';
 		} else {
 			motion = 100;
 			z1++;
 			z2++;
 			pos = '-';
+			girlblack.src = 'girlblack2.png';
+			girlgreen.src = 'girlgreen2.png';
 		};
 		if ((z1 < s[i1].length)&&(z1>=0)&&(s[i1][z1] != 1)) {
 			my1 = y1;
@@ -125,11 +133,15 @@ function sh(keyCode) {
 			i1--;
 			i2--;
 			pos = '+';
+			girlblack.src = 'girlblack3.png';
+			girlgreen.src = 'girlgreen3.png';
 		} else {
 			motion = 100;
 			i1++;
 			i2++;
 			pos = '-';
+			girlblack.src = 'girlblack1.png';
+			girlgreen.src = 'girlgreen1.png';
 		};
 		if ((i1 < s.length)&&(i1>=0)&&(s[i1][z1] != 1)) {
 			mx1 = x1;
@@ -184,8 +196,6 @@ setInterval(function(){
 	mx2 = x2;
 	ctx.clearRect(x1, y1, 100, 100);
 	ctx.clearRect(x2, y2, 100, 100);
-	ctx.fillStyle = 'black';
-	ctx.fillRect(x1,y1,100,100);
-	ctx.fillStyle = 'green';
-	ctx.fillRect(x2,y2,100,100);
+	ctx.drawImage(girlblack,x1,y1);
+	ctx.drawImage(girlgreen,x2,y2);
 },20);
