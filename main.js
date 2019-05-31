@@ -1,9 +1,9 @@
 var img = new Image();
 img.src = 'walls.png';
 var girlblack = new Image();
-girlblack.src = 'girlblack1.png';
+girlblack.src = 'img/girlblack1.png';
 var girlgreen = new Image();
-girlgreen.src = 'girlgreen1.png';  
+girlgreen.src = 'img/girlgreen1.png';  
 var i1 = 0;
 var z1 = 0;
 var x1 = z1 * 100;
@@ -30,18 +30,28 @@ var doorgreen_x;
 var doorgreen_y;
 var motion = 0;
 var pos = 0;
-var s = [[4,0,0,1,0,2,1],
-		 [1,1,0,1,0,1,1],
-		 [0,0,0,0,0,1,0],
-		 [1,1,1,1,1,1,0],
-		 [3,1,0,0,0,0,0],
-		 [0,0,0,0,0,1,0],
-		 [1,1,1,1,5,1,0]];
+var lvl_1 = [[4,0,0,1,0,2,1],
+		 	[1,1,0,1,0,1,1],
+		 	[0,0,0,0,0,1,0],
+		 	[1,1,1,1,1,1,0],
+		 	[3,1,0,0,0,0,0],
+		 	[0,0,0,0,0,1,0],
+		 	[1,1,1,1,5,1,0]];
+var lvl_2 = [[0,0,0,1,0,0,0],
+		 	[0,1,0,1,0,1,2],
+		 	[4,1,0,0,0,1,1],
+		 	[1,1,0,1,1,1,5],
+		 	[0,0,0,0,0,0,0],
+		 	[1,0,1,1,1,1,0],
+			[0,0,0,0,1,3,0]];
+var s = lvl_1;
 var canvas = document.getElementById('c1');
 canvas.width = s[0].length * 100;
 canvas.height = s.length * 100;
 var ctx = canvas.getContext('2d');
+draw_(s,keyblack_x,keyblack_y,keygreen_x,keygreen_y);
 
+function draw_() {
 	for (var y = 0; y < s.length; y++) {
 		for (var t = 0; t < s[y].length; t++) {
 			if (s[y][t] == 1){
@@ -73,8 +83,8 @@ var ctx = canvas.getContext('2d');
 			}
 		}
 	}
-
-function square_(){
+}
+function square_(y,t){
 	ctx.fillStyle = 'brown';
 	ctx.fillRect(t*100,y*100,100,100);
 	ctx.strokeStyle = 'black';
@@ -101,15 +111,15 @@ function sh(keyCode) {
 			z1--;
 			z2--;
 			pos = '+';
-			girlblack.src = 'girlblack4.png';
-			girlgreen.src = 'girlgreen4.png';
+			girlblack.src = 'img/girlblack4.png';
+			girlgreen.src = 'img/girlgreen4.png';
 		} else {
 			motion = 100;
 			z1++;
 			z2++;
 			pos = '-';
-			girlblack.src = 'girlblack2.png';
-			girlgreen.src = 'girlgreen2.png';
+			girlblack.src = 'img/girlblack2.png';
+			girlgreen.src = 'img/girlgreen2.png';
 		};
 		if ((z1 < s[i1].length)&&(z1>=0)&&(s[i1][z1] != 1)) {
 			my1 = y1;
@@ -133,15 +143,15 @@ function sh(keyCode) {
 			i1--;
 			i2--;
 			pos = '+';
-			girlblack.src = 'girlblack3.png';
-			girlgreen.src = 'girlgreen3.png';
+			girlblack.src = 'img/girlblack3.png';
+			girlgreen.src = 'img/girlgreen3.png';
 		} else {
 			motion = 100;
 			i1++;
 			i2++;
 			pos = '-';
-			girlblack.src = 'girlblack1.png';
-			girlgreen.src = 'girlgreen1.png';
+			girlblack.src = 'img/girlblack1.png';
+			girlgreen.src = 'img/girlgreen1.png';
 		};
 		if ((i1 < s.length)&&(i1>=0)&&(s[i1][z1] != 1)) {
 			mx1 = x1;
@@ -177,17 +187,39 @@ setInterval(function(){
 	if (keyblack == false) {
 		doorblack = false;
 	}
-	if (doorblack == true) {
-		ctx.fillStyle = 'LightSlateGray';
-		ctx.fillRect(doorblack_x,doorblack_y,100,100);
-	}
+	ctx.fillStyle = 'LightSlateGray';
+	ctx.fillRect(doorblack_x,doorblack_y,100,100);
 	if (keygreen == false) {
 		doorgreen = false;
 	}
-	if (doorgreen == true) {
-		ctx.fillStyle = 'Lime';
-		ctx.fillRect(doorgreen_x,doorgreen_y,100,100);
+	
+	if ((doorgreen == false)&&(doorblack == false)&&(x1 == doorblack_x)&&(x2 == doorgreen_x)&&(y1 == doorblack_y)&&(y2 == doorgreen_y)) {
+		setTimeout(function () {
+			s = lvl_2;
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			draw_(s);
+			i1 = 0;
+			z1 = 0;
+			x1 = z1 * 100;
+			y1 = i1 * 100;
+			i2 = 6;
+			z2 = 0;
+			x2 = z2*100;
+			y2 = i2*100;
+			my1 = y1;
+			my2 = y2;
+			mx1 = x1;
+			mx2 = x2;
+			keyblack = true;
+			keygreen = true;
+			doorblack = true;
+			doorgreen = true;
+			motion = 0;
+			pos = 0;
+	}, 500);
 	}
+	ctx.fillStyle = 'Lime';
+	ctx.fillRect(doorgreen_x,doorgreen_y,100,100);
 	ctx.clearRect(mx1, my1, 100, 100);
 	ctx.clearRect(mx2, my2, 100, 100);
 	mx1 = x1;
