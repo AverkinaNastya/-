@@ -1,88 +1,94 @@
-var img = new Image();
-img.src = 'walls.png';
 var girlblack = new Image();
 girlblack.src = 'img/girlblack1.png';
 var girlgreen = new Image();
-girlgreen.src = 'img/girlgreen1.png';  
-var i1 = 0;
-var z1 = 0;
-var x1 = z1 * 100;
-var y1 = i1 * 100;
-var i2 = 6;
-var z2 = 6;
-var x2 = z2*100;
-var y2 = i2*100;
-var my1 = y1;
-var my2 = y2;
-var mx1 = x1;
-var mx2 = x2;
-var keyblack = true;
-var keyblack_x;
-var keyblack_y;
-var keygreen = true;
-var keygreen_x;
-var keygreen_y;
-var doorblack = true;
-var doorblack_x;
-var doorblack_y;
-var doorgreen = true;
-var doorgreen_x;
-var doorgreen_y;
+girlgreen.src = 'img/girlgreen1.png';
+var doorblack_img = new Image();
+doorblack_img.src = 'img/doorblack.png';
+var doorgreen_img = new Image();
+doorgreen_img.src = 'img/doorgreen.png';
+var keyblack_img = new Image();
+keyblack_img.src = 'img/keyblack.png';
+var keygreen_img = new Image();
+keygreen_img.src = 'img/keygreen.png';
+var spike_img = new Image();
+spike_img.src = 'img/spikes.png';
+var lvls = [{
+	i1 : 0,
+	z1 : 0,
+	i2 : 6,
+	z2 : 6,
+	s : [[4,0,0,1,0,2,1],
+		 [1,1,0,1,0,1,1],
+		 [0,0,0,0,0,1,6],
+		 [1,1,1,1,1,1,0],
+		 [3,1,0,0,0,0,0],
+		 [0,0,0,0,0,1,0],
+		 [1,1,1,1,5,1,0]],
+	doorblack : true,
+	doorgreen : true,
+	keygreen : true,
+	keyblack : true,
+}, {
+	i1 : 0,
+	z1 : 0,
+	i2 : 6,
+	z2 : 0,
+	s : [[0,0,0,1,0,0,0],
+		 [0,1,0,1,0,1,2],
+		 [4,1,0,0,0,1,1],
+		 [0,1,0,1,1,1,5],
+		 [0,0,0,0,0,0,0],
+		 [1,0,1,1,1,1,0],
+		 [0,0,0,0,1,3,0]],
+	doorblack : true,
+	doorgreen : true,
+	keygreen : true,
+	keyblack : true,
+}];
+var nom_lvl = 0;
 var motion = 0;
 var pos = 0;
-var lvl_1 = [[4,0,0,1,0,2,1],
-		 	[1,1,0,1,0,1,1],
-		 	[0,0,0,0,0,1,0],
-		 	[1,1,1,1,1,1,0],
-		 	[3,1,0,0,0,0,0],
-		 	[0,0,0,0,0,1,0],
-		 	[1,1,1,1,5,1,0]];
-var lvl_2 = [[0,0,0,1,0,0,0],
-		 	[0,1,0,1,0,1,2],
-		 	[4,1,0,0,0,1,1],
-		 	[1,1,0,1,1,1,5],
-		 	[0,0,0,0,0,0,0],
-		 	[1,0,1,1,1,1,0],
-			[0,0,0,0,1,3,0]];
-var s = lvl_1;
+var spike_x;
+var spike_y;
 var canvas = document.getElementById('c1');
-canvas.width = s[0].length * 100;
-canvas.height = s.length * 100;
+canvas.width = lvls[nom_lvl].s[0].length * 100;
+canvas.height = lvls[nom_lvl].s.length * 100;
 var ctx = canvas.getContext('2d');
-draw_(s,keyblack_x,keyblack_y,keygreen_x,keygreen_y);
+draw_(lvls[nom_lvl].s,lvls[nom_lvl].keyblack_x,lvls[nom_lvl].keyblack_y,lvls[nom_lvl].keygreen_x,lvls[nom_lvl].keygreen_y, spike_x, spike_x);
 
 function draw_() {
-	for (var y = 0; y < s.length; y++) {
-		for (var t = 0; t < s[y].length; t++) {
-			if (s[y][t] == 1){
+	for (var y = 0; y < lvls[nom_lvl].s.length; y++) {
+		for (var t = 0; t < lvls[nom_lvl].s[y].length; t++) {
+			if (lvls[nom_lvl].s[y][t] == 1){
 				square_(y,t);
 			}
-			if (s[y][t] == 2) {
-				keyblack_x = t*100;
-				keyblack_y = y*100;
-				ctx.fillStyle = 'Gray';
-				ctx.fillRect(t*100,y*100,100,100);
+			if (lvls[nom_lvl].s[y][t] == 2) {
+				lvls[nom_lvl].keyblack_x = t*100;
+				lvls[nom_lvl].keyblack_y = y*100;
 			}
-			if (s[y][t] == 3) {
-				keygreen_x = t*100;
-				keygreen_y = y*100;
-				ctx.fillStyle = 'SeaGreen';
-				ctx.fillRect(t*100,y*100,100,100);
+			if (lvls[nom_lvl].s[y][t] == 3) {
+				lvls[nom_lvl].keygreen_x = t*100;
+				lvls[nom_lvl].keygreen_y = y*100;
 			}
-			if (s[y][t] == 4) {
-				doorblack_x = t * 100;
-				doorblack_y = y * 100;
-				ctx.fillStyle = 'LightSlateGray';
-				ctx.fillRect(t*100,y*100,100,100);
+			if (lvls[nom_lvl].s[y][t] == 4) {
+				lvls[nom_lvl].doorblack_x = t * 100;
+				lvls[nom_lvl].doorblack_y = y * 100;
 			}
-			if (s[y][t] == 5) {
-				doorgreen_x = t * 100;
-				doorgreen_y = y * 100;
-				ctx.fillStyle = 'Lime';
-				ctx.fillRect(t*100,y*100,100,100);
+			if (lvls[nom_lvl].s[y][t] == 5) {
+				lvls[nom_lvl].doorgreen_x = t * 100;
+				lvls[nom_lvl].doorgreen_y = y * 100;
+			}
+			if (lvls[nom_lvl].s[y][t] == 6) {
+				spike_x = t * 100;
+				spike_y = y * 100;
+				// ctx.drawImage(spike_img,t * 100,y * 100);
 			}
 		}
 	}
+	lvls[nom_lvl].x1 = lvls[nom_lvl].z1 * 100;
+	lvls[nom_lvl].y1 = lvls[nom_lvl].i1 * 100;
+	lvls[nom_lvl].x2 = lvls[nom_lvl].z2*100;
+	lvls[nom_lvl].y2 = lvls[nom_lvl].i2*100;
 }
 function square_(y,t){
 	ctx.fillStyle = 'brown';
@@ -108,126 +114,125 @@ function sh(keyCode) {
 	function left_right() {
 		if ((keyCode*1 == 97)||(keyCode*1 == 1092)) {
 			motion = -100;
-			z1--;
-			z2--;
+			lvls[nom_lvl].z1--;
+			lvls[nom_lvl].z2--;
 			pos = '+';
 			girlblack.src = 'img/girlblack4.png';
 			girlgreen.src = 'img/girlgreen4.png';
 		} else {
 			motion = 100;
-			z1++;
-			z2++;
+			lvls[nom_lvl].z1++;
+			lvls[nom_lvl].z2++;
 			pos = '-';
 			girlblack.src = 'img/girlblack2.png';
 			girlgreen.src = 'img/girlgreen2.png';
 		};
-		if ((z1 < s[i1].length)&&(z1>=0)&&(s[i1][z1] != 1)) {
-			my1 = y1;
-			mx1 = x1;
-			x1 += motion;
+		if ((lvls[nom_lvl].z1 < lvls[nom_lvl].s[lvls[nom_lvl].i1].length)&&(lvls[nom_lvl].z1>=0)&&(lvls[nom_lvl].s[lvls[nom_lvl].i1][lvls[nom_lvl].z1] != 1)) {
+			lvls[nom_lvl].my1 = lvls[nom_lvl].y1;
+			lvls[nom_lvl].mx1 = lvls[nom_lvl].x1;
+			lvls[nom_lvl].x1 += motion;
 		} else	if(pos == '+'){
-					z1++;
-			    }else {z1--}
-		if ((z2 < s[i1].length)&&(z2>=0)&&(s[i2][z2] != 1)) {
-			my2 = y2;
-			mx2 = x2;
-			x2 += motion;
+					lvls[nom_lvl].z1++;
+			    }else {lvls[nom_lvl].z1--}
+		if ((lvls[nom_lvl].z2 < lvls[nom_lvl].s[lvls[nom_lvl].i1].length)&&(lvls[nom_lvl].z2>=0)&&(lvls[nom_lvl].s[lvls[nom_lvl].i2][lvls[nom_lvl].z2] != 1)) {
+			lvls[nom_lvl].my2 = lvls[nom_lvl].y2;
+			lvls[nom_lvl].mx2 = lvls[nom_lvl].x2;
+			lvls[nom_lvl].x2 += motion;
 		} else	if(pos == '+'){
-					z2++;
-			    }else {z2--}
+					lvls[nom_lvl].z2++;
+			    }else {lvls[nom_lvl].z2--}
 
 	}
 	function top_bottom() {
 		if ((keyCode*1 == 119)||(keyCode*1 == 1094)) {
 			motion = -100;
-			i1--;
-			i2--;
+			lvls[nom_lvl].i1--;
+			lvls[nom_lvl].i2--;
 			pos = '+';
 			girlblack.src = 'img/girlblack3.png';
 			girlgreen.src = 'img/girlgreen3.png';
 		} else {
 			motion = 100;
-			i1++;
-			i2++;
+			lvls[nom_lvl].i1++;
+			lvls[nom_lvl].i2++;
 			pos = '-';
 			girlblack.src = 'img/girlblack1.png';
 			girlgreen.src = 'img/girlgreen1.png';
 		};
-		if ((i1 < s.length)&&(i1>=0)&&(s[i1][z1] != 1)) {
-			mx1 = x1;
-			my1 = y1;
-			y1 += motion;
+		if ((lvls[nom_lvl].i1 < lvls[nom_lvl].s.length)&&(lvls[nom_lvl].i1>=0)&&(lvls[nom_lvl].s[lvls[nom_lvl].i1][lvls[nom_lvl].z1] != 1)) {
+			lvls[nom_lvl].mx1 = lvls[nom_lvl].x1;
+			lvls[nom_lvl].my1 = lvls[nom_lvl].y1;
+			lvls[nom_lvl].y1 += motion;
 		} else	if(pos == '+'){
-					i1++;
-			    }else {i1--}
-		if ((i2 < s.length)&&(i2>=0)&&(s[i2][z2] != 1)) {
-			mx2 = x2;
-			my2 = y2;
-			y2 += motion;
+					lvls[nom_lvl].i1++;
+			    }else {lvls[nom_lvl].i1--}
+		if ((lvls[nom_lvl].i2 < lvls[nom_lvl].s.length)&&(lvls[nom_lvl].i2>=0)&&(lvls[nom_lvl].s[lvls[nom_lvl].i2][lvls[nom_lvl].z2] != 1)) {
+			lvls[nom_lvl].mx2 = lvls[nom_lvl].x2;
+			lvls[nom_lvl].my2 = lvls[nom_lvl].y2;
+			lvls[nom_lvl].y2 += motion;
 		} else	if(pos == '+'){
-					i2++;
-			    }else {i2--}
+					lvls[nom_lvl].i2++;
+			    }else {lvls[nom_lvl].i2--}
 	}
 }
 setInterval(function(){
-	if (s[i1][z1] == 2) {
-		keyblack = false;
+	if (lvls[nom_lvl].s[lvls[nom_lvl].i1][lvls[nom_lvl].z1] == 2) {
+		lvls[nom_lvl].keyblack = false;
 	}
-	if (keyblack == true) {
-		ctx.fillStyle = 'Gray';
-		ctx.fillRect(keyblack_x,keyblack_y,100,100);
+	if (lvls[nom_lvl].keyblack == true) {
+		ctx.clearRect(lvls[nom_lvl].keyblack_x,lvls[nom_lvl].keyblack_y,100,100);
+		ctx.drawImage(keyblack_img,lvls[nom_lvl].keyblack_x + 6,lvls[nom_lvl].keyblack_y);
 	}
-	if (s[i2][z2] == 3) {
-		keygreen = false;
+	if (lvls[nom_lvl].s[lvls[nom_lvl].i2][lvls[nom_lvl].z2] == 3) {
+		lvls[nom_lvl].keygreen = false;
 	}
-	if (keygreen == true) {
-		ctx.fillStyle = 'SeaGreen';
-		ctx.fillRect(keygreen_x,keygreen_y,100,100);
+	if (lvls[nom_lvl].keygreen == true) {
+		ctx.clearRect(lvls[nom_lvl].keygreen_x,lvls[nom_lvl].keygreen_y,100,100);
+		ctx.drawImage(keygreen_img,lvls[nom_lvl].keygreen_x + 6,lvls[nom_lvl].keygreen_y);
 	}
-	if (keyblack == false) {
-		doorblack = false;
+	if (lvls[nom_lvl].keyblack == false) {
+		lvls[nom_lvl].doorblack = false;
 	}
-	ctx.fillStyle = 'LightSlateGray';
-	ctx.fillRect(doorblack_x,doorblack_y,100,100);
-	if (keygreen == false) {
-		doorgreen = false;
+	ctx.clearRect(lvls[nom_lvl].doorblack_x,lvls[nom_lvl].doorblack_y,100,100);
+	ctx.drawImage(doorblack_img,lvls[nom_lvl].doorblack_x + 10,lvls[nom_lvl].doorblack_y);
+	ctx.clearRect(lvls[nom_lvl].doorgreen_x,lvls[nom_lvl].doorgreen_y,100,100);
+	ctx.drawImage(doorgreen_img,lvls[nom_lvl].doorgreen_x + 10,lvls[nom_lvl].doorgreen_y);
+	if (lvls[nom_lvl].keygreen == false) {
+		lvls[nom_lvl].doorgreen = false;
 	}
 	
-	if ((doorgreen == false)&&(doorblack == false)&&(x1 == doorblack_x)&&(x2 == doorgreen_x)&&(y1 == doorblack_y)&&(y2 == doorgreen_y)) {
-		setTimeout(function () {
-			s = lvl_2;
-			ctx.clearRect(0,0,canvas.width,canvas.height);
-			draw_(s);
-			i1 = 0;
-			z1 = 0;
-			x1 = z1 * 100;
-			y1 = i1 * 100;
-			i2 = 6;
-			z2 = 0;
-			x2 = z2*100;
-			y2 = i2*100;
-			my1 = y1;
-			my2 = y2;
-			mx1 = x1;
-			mx2 = x2;
-			keyblack = true;
-			keygreen = true;
-			doorblack = true;
-			doorgreen = true;
+	if ((lvls[nom_lvl].doorgreen == false)&&(lvls[nom_lvl].doorblack == false)&&(lvls[nom_lvl].x1 == lvls[nom_lvl].doorblack_x)&&(lvls[nom_lvl].x2 == lvls[nom_lvl].doorgreen_x)&&(lvls[nom_lvl].y1 == lvls[nom_lvl].doorblack_y)&&(lvls[nom_lvl].y2 == lvls[nom_lvl].doorgreen_y)) {
+		if (nom_lvl + 1 != lvls.length) {
+			nom_lvl++;
+				lvls[nom_lvl].x1 = lvls[nom_lvl].z1 * 100;
+				lvls[nom_lvl].y1 = lvls[nom_lvl].i1 * 100;
+				lvls[nom_lvl].x2 = lvls[nom_lvl].z2*100;
+				lvls[nom_lvl].y2 = lvls[nom_lvl].i2*100;
+				motion = 0;
+				pos = 0;
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+				draw_(lvls);
+		}
+	}
+	if ((lvls[nom_lvl].x1 == lvls[nom_lvl].x2)&&(lvls[nom_lvl].y1 == lvls[nom_lvl].y2)){
+			lvls[nom_lvl].x1 = lvls[nom_lvl].z1 * 100;
+			lvls[nom_lvl].y1 = lvls[nom_lvl].i1 * 100;
+			lvls[nom_lvl].x2 = lvls[nom_lvl].z2*100;
+			lvls[nom_lvl].y2 = lvls[nom_lvl].i2*100;
 			motion = 0;
 			pos = 0;
-	}, 500);
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			draw_(lvls);
 	}
-	ctx.fillStyle = 'Lime';
-	ctx.fillRect(doorgreen_x,doorgreen_y,100,100);
-	ctx.clearRect(mx1, my1, 100, 100);
-	ctx.clearRect(mx2, my2, 100, 100);
-	mx1 = x1;
-	my1 = y1;
-	my2 = y2;
-	mx2 = x2;
-	ctx.clearRect(x1, y1, 100, 100);
-	ctx.clearRect(x2, y2, 100, 100);
-	ctx.drawImage(girlblack,x1,y1);
-	ctx.drawImage(girlgreen,x2,y2);
+
+	ctx.clearRect(lvls[nom_lvl].mx1, lvls[nom_lvl].my1, 100, 100);
+	ctx.clearRect(lvls[nom_lvl].mx2, lvls[nom_lvl].my2, 100, 100);
+	lvls[nom_lvl].mx1 = lvls[nom_lvl].x1;
+	lvls[nom_lvl].my1 = lvls[nom_lvl].y1;
+	lvls[nom_lvl].my2 = lvls[nom_lvl].y2;
+	lvls[nom_lvl].mx2 = lvls[nom_lvl].x2;
+	ctx.clearRect(lvls[nom_lvl].x1, lvls[nom_lvl].y1, 100, 100);
+	ctx.clearRect(lvls[nom_lvl].x2, lvls[nom_lvl].y2, 100, 100);
+	ctx.drawImage(girlblack,lvls[nom_lvl].x1,lvls[nom_lvl].y1);
+	ctx.drawImage(girlgreen,lvls[nom_lvl].x2,lvls[nom_lvl].y2);
 },20);
