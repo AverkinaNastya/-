@@ -22,6 +22,12 @@ var lvls = [{
 		 [3,1,0,0,0,0,0],
 		 [0,0,0,0,0,1,0],
 		 [1,1,1,1,5,1,0]],
+	skeletons : [{
+		i: ,
+		z: ,
+		direction : '',
+
+	}]
 }, {
 	i1 : 0,
 	z1 : 0,
@@ -63,13 +69,25 @@ var lvls = [{
 	z1 : 2,
 	i2 : 2,
 	z2 : 3,
-	s : [[1,6,1,1,6,0,2],
+	s : [[0,6,1,1,6,0,2],
 		 [5,0,6,6,0,0,6],
 		 [0,0,0,0,0,0,0],
-		 [6,0,1,6,0,1,0],
+		 [6,0,1,1,0,1,0],
 		 [1,0,1,3,6,0,0],
-		 [6,0,1,0,1,0,6],
-		 [0,0,0,0,1,4,6]],
+		 [1,0,1,0,1,4,0],
+		 [6,0,0,0,1,6,6]],
+}, {
+	i1 : 0,
+	z1 : 0,
+	i2 : 0,
+	z2 : 1,
+	s : [[0,0,1,2,3,4,5],
+		 [0,0,0,0,0,0,0],
+		 [0,0,0,0,0,0,0],
+		 [0,0,0,0,0,0,0],
+		 [0,0,0,0,0,0,0],
+		 [0,0,0,0,0,0,0],
+		 [0,0,0,0,0,0,0]],
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -165,6 +183,9 @@ function spikes_(y,t) {
 }
 
 function sh(keyCode) {
+	if (keyCode*1 == 27){
+		alert('esc');
+	}
 	if ((keyCode*1 == 97)||(keyCode*1 == 1092)||(keyCode*1 == 100)||(keyCode*1 == 1074)){
 		left_right(keyCode);
 	}
@@ -233,6 +254,18 @@ function sh(keyCode) {
 		} else	if(pos == '+'){
 					i2++;
 			    }else {i2--}
+	}
+}
+
+function menu(keyCode) {
+	if (keyCode*1 == 27){
+		if (document.getElementById('menu').style.display != 'block'){
+			document.getElementById('menu').style.display = 'block';
+		} else {
+			document.getElementById('menu').style.display = 'none';
+		}
+	} else {
+		document.getElementById('menu').style.display = 'none';
 	}
 }
 
