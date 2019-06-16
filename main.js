@@ -320,19 +320,21 @@ function repeat_(n) {
 }
 
 function _nps_() {
-		clearInterval(timer_nps);
+
 		if (lvls[nom_lvl].nps != undefined) {
 		for (var b = 0; b < lvls[nom_lvl].nps.length; b++) {
 			nps[b] = new Object();
 			nps[b].direction = lvls[nom_lvl].nps[b].direction;
+			nps[b].type = lvls[nom_lvl].nps[b].type;
 			nps[b].i = lvls[nom_lvl].nps[b].i;
 			nps[b].z = lvls[nom_lvl].nps[b].z;
 			nps[b].x = nps[b].z * 100;
 			nps[b].y = nps[b].i * 100;
 			nps[b].mx = nps[b].z * 100;
 			nps[b].my = nps[b].i * 100;	
-			ctx.fillStyle = 'grey';	
-			ctx.fillRect(nps[b].x,nps[b].y,100,100);		
+			if (nps[b].type == 'skeleton') {
+				ctx.drawImage(skeleton1,nps[b].x,nps[b].y);	
+			}	
 		}
 		
 		if (timer_ == false) {
@@ -346,6 +348,10 @@ function _nps_() {
 										nps[i].mx = nps[i].x;
 										nps[i].x += 100;
 										nps[i].z += 1;
+										if (nps[i].type == 'skeleton') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(skeleton2,nps[i].x + 25,nps[i].y);
+										}
 									}
 						break;
 						case 'left': if ((nps[i].x == 0)||(s[nps[i].i][nps[i].z - 1] == 1)||(s[nps[i].i][nps[i].z - 1] == 6)) {
@@ -354,6 +360,10 @@ function _nps_() {
 										nps[i].mx = nps[i].x;
 										nps[i].x -= 100;
 										nps[i].z -= 1;
+										if (nps[i].type == 'skeleton') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(skeleton4,nps[i].x + 25,nps[i].y);
+										}
 									}
 						break;
 						case 'bottom': if ((nps[i].y + 100 == canvas.height)||(s[nps[i].i + 1][nps[i].z] == 1)||(s[nps[i].i + 1][nps[i].z] == 6)) {
@@ -362,6 +372,10 @@ function _nps_() {
 										nps[i].my = nps[i].y;
 										nps[i].y += 100;
 										nps[i].i += 1;
+										if (nps[i].type == 'skeleton') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(skeleton1,nps[i].x + 25,nps[i].y);
+										}
 									}
 						break;
 						case 'top': if ((nps[i].y== 0)||(s[nps[i].i - 1][nps[i].z] == 1)||(s[nps[i].i - 1][nps[i].z] == 6)) {
@@ -370,12 +384,16 @@ function _nps_() {
 										nps[i].my = nps[i].y;
 										nps[i].y -= 100;
 										nps[i].i -= 1;
+										if (nps[i].type == 'skeleton') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(skeleton1,nps[i].x + 25,nps[i].y);
+										}
 									}
 						break;
 						}
-					ctx.fillStyle = 'grey';
-						ctx.clearRect(nps[i].mx,nps[i].my,100,100)
-						ctx.fillRect(nps[i].x,nps[i].y,100,100);
+					// ctx.fillStyle = 'grey';
+					// 	ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+					// 	ctx.fillRect(nps[i].x,nps[i].y,100,100);
 				}	
 			},1000);
 			timer_ = true;
