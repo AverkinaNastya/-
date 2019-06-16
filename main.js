@@ -22,12 +22,6 @@ var lvls = [{
 		 [3,1,0,0,0,0,0],
 		 [0,0,0,0,0,1,0],
 		 [1,1,1,1,5,1,0]],
-	skeletons : [{
-		i: ,
-		z: ,
-		direction : '',
-
-	}]
 }, {
 	i1 : 0,
 	z1 : 0,
@@ -81,13 +75,34 @@ var lvls = [{
 	z1 : 0,
 	i2 : 0,
 	z2 : 1,
-	s : [[0,0,1,2,3,4,5],
+	s : [[0,0,1,2,3,4,0],
 		 [0,0,0,0,0,0,0],
 		 [0,0,0,0,0,0,0],
-		 [0,0,0,0,0,0,0],
-		 [0,0,0,0,0,0,0],
-		 [0,0,0,0,0,0,0],
-		 [0,0,0,0,0,0,0]],
+		 [0,0,0,0,1,0,0],
+		 [0,0,0,0,1,0,0],
+		 [0,0,0,0,1,0,0],
+		 [0,0,0,1,5,0,0]],
+	nps : [{
+		type: 'skeleton',
+		i: 6,
+		z: 0,
+		direction : 'right',
+	},{
+		type: 'skeleton',
+		i: 4,
+		z: 0,
+		direction : 'right',
+	},{
+		type: 'skeleton',
+		i: 2,
+		z: 0,
+		direction : 'right',
+	},{
+		type: 'skeleton',
+		i: 6,
+		z: 6,
+		direction : 'top',
+	}]
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -109,6 +124,8 @@ var doorblack_x;
 var doorblack_y;
 var doorgreen_x;
 var doorgreen_y;
+var nps = [];
+var timer_ = false;
 var x1 = z1 * 100;
 var y1 = i1 * 100;
 var x2 = z2*100;
@@ -122,7 +139,6 @@ canvas.width = s[0].length * 100;
 canvas.height = s.length * 100;
 var ctx = canvas.getContext('2d');
 draw_(s,keyblack_x,keyblack_y,keygreen_x,keygreen_y);
-
 
 function draw_() {
 	for (var y = 0; y < s.length; y++) {
@@ -183,17 +199,14 @@ function spikes_(y,t) {
 }
 
 function sh(keyCode) {
-	if (keyCode*1 == 27){
-		alert('esc');
-	}
-	if ((keyCode*1 == 97)||(keyCode*1 == 1092)||(keyCode*1 == 100)||(keyCode*1 == 1074)){
+	if ((keyCode*1 == 97)||(keyCode*1 == 1092)||(keyCode*1 == 100)||(keyCode*1 == 1074)||(keyCode*1 == 37)||(keyCode*1 == 39)){
 		left_right(keyCode);
 	}
-	if ((keyCode*1 == 119)||(keyCode*1 == 1094)||(keyCode*1 == 115)||(keyCode*1 == 1099)){
+	if ((keyCode*1 == 119)||(keyCode*1 == 1094)||(keyCode*1 == 115)||(keyCode*1 == 1099)||(keyCode*1 == 38)||(keyCode*1 == 40)){
 		top_bottom(keyCode);
 	}
 	function left_right() {
-		if ((keyCode*1 == 97)||(keyCode*1 == 1092)) {
+		if ((keyCode*1 == 97)||(keyCode*1 == 1092)||(keyCode*1 == 37)) {
 			motion = -100;
 			z1--;
 			z2--;
@@ -225,7 +238,7 @@ function sh(keyCode) {
 
 	}
 	function top_bottom() {
-		if ((keyCode*1 == 119)||(keyCode*1 == 1094)) {
+		if ((keyCode*1 == 119)||(keyCode*1 == 1094)||(keyCode*1 == 38)) {
 			motion = -100;
 			i1--;
 			i2--;
@@ -255,18 +268,18 @@ function sh(keyCode) {
 					i2++;
 			    }else {i2--}
 	}
-}
-
-function menu(keyCode) {
 	if (keyCode*1 == 27){
-		if (document.getElementById('menu').style.display != 'block'){
-			document.getElementById('menu').style.display = 'block';
-		} else {
-			document.getElementById('menu').style.display = 'none';
-		}
+		menu(keyCode);
+		function menu() {
+				if (document.getElementById('menu').style.display != 'block'){
+					document.getElementById('menu').style.display = 'block';
+				} else {
+					document.getElementById('menu').style.display = 'none';
+				}
+			}
 	} else {
-		document.getElementById('menu').style.display = 'none';
-	}
+				document.getElementById('menu').style.display = 'none';
+			}
 }
 
 function repeat_(n) {
@@ -295,6 +308,74 @@ function repeat_(n) {
 			pos = 0;
 			ctx.clearRect(0,0,canvas.width,canvas.height);
 			draw_(s);
+			_nps_(lvls[nom_lvl], nps, s);
+}
+
+function _nps_() {
+		clearInterval(timer_nps);
+		if (lvls[nom_lvl].nps != undefined) {
+		for (var b = 0; b < lvls[nom_lvl].nps.length; b++) {
+			nps[b] = new Object();
+			nps[b].direction = lvls[nom_lvl].nps[b].direction;
+			nps[b].i = lvls[nom_lvl].nps[b].i;
+			nps[b].z = lvls[nom_lvl].nps[b].z;
+			nps[b].x = nps[b].z * 100;
+			nps[b].y = nps[b].i * 100;
+			nps[b].mx = nps[b].z * 100;
+			nps[b].my = nps[b].i * 100;	
+			ctx.fillStyle = 'grey';	
+			ctx.fillRect(nps[b].x,nps[b].y,100,100);		
+		}
+		
+		if (timer_ == false) {
+
+			var timer_nps = setInterval(function () {
+				for (var i = 0; i < nps.length; i++) {
+						switch (nps[i].direction) {
+						case 'right': if ((nps[i].x + 100 == canvas.width)||(s[nps[i].i][nps[i].z + 1] == 1)||(s[nps[i].i][nps[i].z + 1] == 6)) {
+										nps[i].direction = 'left';
+									} else {
+										nps[i].mx = nps[i].x;
+										nps[i].x += 100;
+										nps[i].z += 1;
+									}
+						break;
+						case 'left': if ((nps[i].x == 0)||(s[nps[i].i][nps[i].z - 1] == 1)||(s[nps[i].i][nps[i].z - 1] == 6)) {
+										nps[i].direction = 'right';
+									} else {
+										nps[i].mx = nps[i].x;
+										nps[i].x -= 100;
+										nps[i].z -= 1;
+									}
+						break;
+						case 'bottom': if ((nps[i].y + 100 == canvas.height)||(s[nps[i].i + 1][nps[i].z] == 1)||(s[nps[i].i + 1][nps[i].z] == 6)) {
+										nps[i].direction = 'top';
+									} else {
+										nps[i].my = nps[i].y;
+										nps[i].y += 100;
+										nps[i].i += 1;
+									}
+						break;
+						case 'top': if ((nps[i].y== 0)||(s[nps[i].i - 1][nps[i].z] == 1)||(s[nps[i].i - 1][nps[i].z] == 6)) {
+										nps[i].direction = 'bottom';
+									} else {
+										nps[i].my = nps[i].y;
+										nps[i].y -= 100;
+										nps[i].i -= 1;
+									}
+						break;
+						}
+					ctx.fillStyle = 'grey';
+						ctx.clearRect(nps[i].mx,nps[i].my,100,100)
+						ctx.fillRect(nps[i].x,nps[i].y,100,100);
+				}	
+			},1000);
+			timer_ = true;
+		}
+		} else {
+		nps = [];
+		clearInterval(timer_nps);
+		};
 }
 
 setInterval(function(){
@@ -326,6 +407,8 @@ setInterval(function(){
 		if (nom_lvl + 1 != lvls.length) {
 			nom_lvl++;
 
+			_nps_(lvls[nom_lvl], nps);
+
 			i1 = lvls[nom_lvl].i1;
 			i2 = lvls[nom_lvl].i2;
 			z1 = lvls[nom_lvl].z1;
@@ -349,8 +432,15 @@ setInterval(function(){
 			draw_(s);
 		}
 	}
+
 	if ((s[i1][z1] == 6)||(s[i2][z2] == 6)||((x1 == x2)&&(y1 == y2))) {
 		repeat_(nom_lvl);
+	}
+
+	for (var i = 0; i < nps.length; i++) {
+		if (((x2 == nps[i].x)&&(y2 == nps[i].y)) || ((x1 == nps[i].x)&&(y1 == nps[i].y))) {
+			repeat_(nom_lvl);
+		}
 	}
 
 	ctx.clearRect(mx1, my1, 100, 100);
