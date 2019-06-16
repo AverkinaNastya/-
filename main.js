@@ -10,6 +10,14 @@ var keyblack_img = new Image();
 keyblack_img.src = 'img/keyblack.png';
 var keygreen_img = new Image();
 keygreen_img.src = 'img/keygreen.png';
+var skeleton1 = new Image();
+skeleton1.src = 'img/skeleton1.png';
+var skeleton2 = new Image();
+skeleton2.src = 'img/skeleton2.png';
+// var skeleton3 = new Image();
+// skeleton3.src = 'img/skeleton3.png';
+var skeleton4 = new Image();
+skeleton4.src = 'img/skeleton4.png';
 var lvls = [{
 	i1 : 0,
 	z1 : 0,
