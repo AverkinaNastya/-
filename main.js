@@ -14,8 +14,8 @@ var skeleton1 = new Image();
 skeleton1.src = 'img/skeleton1.png';
 var skeleton2 = new Image();
 skeleton2.src = 'img/skeleton2.png';
-// var skeleton3 = new Image();
-// skeleton3.src = 'img/skeleton3.png';
+var skeleton3 = new Image();
+skeleton3.src = 'img/Skeleton3.png';
 var skeleton4 = new Image();
 skeleton4.src = 'img/skeleton4.png';
 var lvls = [{
@@ -79,28 +79,36 @@ var lvls = [{
 		 [1,0,1,0,1,4,0],
 		 [6,0,0,0,1,6,6]],
 }, {
+	i1 : 5,
+	z1 : 1,
+	i2 : 1,
+	z2 : 5,
+	s : [[0,0,0,0,0,1,6],
+		 [0,1,1,6,0,0,2],
+		 [0,0,6,1,0,6,1],
+		 [3,6,0,0,0,0,5],
+		 [1,1,0,0,0,0,0],
+		 [6,0,0,1,6,6,0],
+		 [1,6,0,0,0,0,4]],
+	nps : [{
+		type: 'skeleton',
+		i: 4,
+		z: 2,
+		direction : 'right',
+	}]
+}, {
 	i1 : 0,
 	z1 : 0,
 	i2 : 0,
 	z2 : 1,
-	s : [[0,0,1,2,3,4,0],
+	s : [[0,0,1,3,0,6,0],
+		 [0,0,0,6,0,6,0],
 		 [0,0,0,0,0,0,0],
-		 [0,0,0,0,0,0,0],
-		 [0,0,0,0,1,0,0],
-		 [0,0,0,0,1,0,0],
-		 [0,0,0,0,1,0,0],
-		 [0,0,0,1,5,0,0]],
+		 [0,1,0,0,1,1,0],
+		 [4,6,0,0,1,0,0],
+		 [1,6,0,1,6,0,0],
+		 [2,0,0,6,5,0,0]],
 	nps : [{
-		type: 'skeleton',
-		i: 6,
-		z: 0,
-		direction : 'right',
-	},{
-		type: 'skeleton',
-		i: 4,
-		z: 0,
-		direction : 'right',
-	},{
 		type: 'skeleton',
 		i: 2,
 		z: 0,
@@ -110,6 +118,29 @@ var lvls = [{
 		i: 6,
 		z: 6,
 		direction : 'top',
+	}]
+}, {
+	i1 : 1,
+	z1 : 1,
+	i2 : 1,
+	z2 : 2,
+	s : [[4,1,1,1,6,1,2],
+		 [0,0,0,6,0,6,0],
+		 [0,0,0,0,0,0,0],
+		 [1,6,0,1,0,0,1],
+		 [0,3,6,0,0,0,6],
+		 [0,1,6,0,0,1,5],
+		 [0,0,0,0,0,0,0]],
+	nps : [{
+		type: 'skeleton',
+		i: 2,
+		z: 0,
+		direction : 'right',
+	},{
+		type: 'skeleton',
+		i: 4,
+		z: 3,
+		direction : 'bottom',
 	}]
 }];
 var nom_lvl = 0;
@@ -281,12 +312,21 @@ function sh(keyCode) {
 		function menu() {
 				if (document.getElementById('menu').style.display != 'block'){
 					document.getElementById('menu').style.display = 'block';
+					for (var i = 0; i < document.getElementsByClassName('blvls').length; i++) {
+						document.getElementsByClassName('blvls')[i].style.display = 'block';
+					}
 				} else {
 					document.getElementById('menu').style.display = 'none';
+					for (var i = 0; i < document.getElementsByTagName('button').length; i++) {
+						document.getElementsByTagName('button')[i].style.display = 'none';
+					}
 				}
 			}
 	} else {
 				document.getElementById('menu').style.display = 'none';
+				for (var i = 0; i < document.getElementsByTagName('button').length; i++) {
+					document.getElementsByTagName('button')[i].style.display = 'none';
+				}
 			}
 }
 
@@ -322,6 +362,7 @@ function repeat_(n) {
 function _nps_() {
 
 		if (lvls[nom_lvl].nps != undefined) {
+		nps = [];
 		for (var b = 0; b < lvls[nom_lvl].nps.length; b++) {
 			nps[b] = new Object();
 			nps[b].direction = lvls[nom_lvl].nps[b].direction;
@@ -333,7 +374,7 @@ function _nps_() {
 			nps[b].mx = nps[b].z * 100;
 			nps[b].my = nps[b].i * 100;	
 			if (nps[b].type == 'skeleton') {
-				ctx.drawImage(skeleton1,nps[b].x,nps[b].y);	
+				ctx.drawImage(skeleton1,nps[b].x + 25,nps[b].y);	
 			}	
 		}
 		
@@ -386,14 +427,11 @@ function _nps_() {
 										nps[i].i -= 1;
 										if (nps[i].type == 'skeleton') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
-											ctx.drawImage(skeleton1,nps[i].x + 25,nps[i].y);
+											ctx.drawImage(skeleton3,nps[i].x + 25,nps[i].y);
 										}
 									}
 						break;
 						}
-					// ctx.fillStyle = 'grey';
-					// 	ctx.clearRect(nps[i].mx,nps[i].my,100,100);
-					// 	ctx.fillRect(nps[i].x,nps[i].y,100,100);
 				}	
 			},1000);
 			timer_ = true;
@@ -402,6 +440,28 @@ function _nps_() {
 		nps = [];
 		clearInterval(timer_nps);
 		};
+}
+
+function but(lvl0,lvl) {
+	for (var i = 0; i < document.getElementsByTagName('button').length; i++) {
+		document.getElementsByTagName('button')[i].style.display = 'none';
+	}
+
+	document.getElementById('backwards').style.display = 'block';
+
+	for (var i = 0; i < document.getElementsByClassName('but' + lvl0 + '_' + lvl).length; i++) {
+		document.getElementsByClassName('but' + lvl0 + '_' + lvl)[i].style.display = 'block';
+	}
+}
+
+function backwards() {
+	for (var i = 0; i < document.getElementsByTagName('button').length; i++) {
+		document.getElementsByTagName('button')[i].style.display = 'none';
+	}	
+	for (var t = 0; t < document.getElementsByClassName('blvls').length; t++) {
+		document.getElementsByClassName('blvls')[t].style.display = 'block';
+	
+	}
 }
 
 setInterval(function(){

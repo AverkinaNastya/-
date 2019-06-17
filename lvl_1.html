@@ -26,17 +26,32 @@
 			width: 100%;
 			height: 32px;
 		}
+		.but1_10 {
+			background-color: #FF6347;
+		}
 	</style>
 </head>
 <body>
 	<canvas id="c1"></canvas>
 	<div id="menu">
-		<button class="but" onclick="repeat_(0)">уровень 1</button>
-		<button class="but" onclick="repeat_(1)">уровень 2</button>
-		<button class="but" onclick="repeat_(2)">уровень 3</button>
-		<button class="but" onclick="repeat_(3)">уровень 4</button>
-		<button class="but" onclick="repeat_(4)">уровень 5</button>
-		<button class="but" onclick="repeat_(5)">уровень 6</button>
+		<button style="background-color: rgb(0,0,0); color: #FFF;display: none;" class="but" id="backwards" onclick="backwards()"><-- Назад</button>
+
+		<button style="background-color: #FF6347;" class="but blvls" id="b1" onclick="but(1,10)">Уровни от 1 до 10</button>
+
+
+		<button class="but but1_10" style="display: none;" onclick="repeat_(0)">уровень 1</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(1)">уровень 2</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(2)">уровень 3</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(3)">уровень 4</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(4)">уровень 5</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(5)">уровень 6</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(6)">уровень 7</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(7)">уровень 8</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(8)">уровень 9</button>
+		<button class="but but1_10" style="display: none;" onclick="repeat_(9)">уровень 10</button>
+
+		<button style="background-color: #53b553;" class="but blvls" id="b11" onclick="but(11,20)">Уровни от 11 до 20</button>
+
 	</div>
 
 	<script type="text/javascript" src="main.js"></script>
