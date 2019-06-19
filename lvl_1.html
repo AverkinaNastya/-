@@ -15,7 +15,7 @@
 			position: absolute;
 			width: 300px;
 			height: 600px;
-			padding: 50px 200px;
+			padding-top: 50px;
 			top: 8px;
 			left: 8px;
 			border: 1px solid black;
@@ -28,6 +28,14 @@
 		}
 		.but1_10 {
 			background-color: #FF6347;
+		}
+		.but11_20{
+			background-color: #53b553;
+		}
+		#text {
+			width: 300px;
+			vertical-align: top;
+			resize: none;
 		}
 	</style>
 </head>
@@ -52,8 +60,10 @@
 
 		<button style="background-color: #53b553;" class="but blvls" id="b11" onclick="but(11,20)">Уровни от 11 до 20</button>
 
-	</div>
+		<button class="but but11_20" style="display: none;" onclick="repeat_(10)">уровень 11</button>
 
+	</div>
+	<textarea id="text" disabled></textarea>
 	<script type="text/javascript" src="main.js"></script>
 </body>
 </html>

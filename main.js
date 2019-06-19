@@ -18,7 +18,7 @@ var skeleton3 = new Image();
 skeleton3.src = 'img/Skeleton3.png';
 var skeleton4 = new Image();
 skeleton4.src = 'img/skeleton4.png';
-var lvls = [{
+var lvls =  /*1 уровень*/[{
 	i1 : 0,
 	z1 : 0,
 	i2 : 6,
@@ -30,7 +30,7 @@ var lvls = [{
 		 [3,1,0,0,0,0,0],
 		 [0,0,0,0,0,1,0],
 		 [1,1,1,1,5,1,0]],
-}, {
+},/*2 уровень*/ {
 	i1 : 0,
 	z1 : 0,
 	i2 : 6,
@@ -42,7 +42,7 @@ var lvls = [{
 		 [0,0,0,0,0,0,0],
 		 [1,0,1,1,1,1,0],
 		 [0,0,0,0,1,3,0]],
-}, {
+},/*3 уровень*/ {
 	i1 : 0,
 	z1 : 2,
 	i2 : 5,
@@ -54,7 +54,7 @@ var lvls = [{
 		 [1,1,0,1,0,0,5],
 		 [2,0,1,0,0,0,6],
 		 [0,0,0,0,1,6,1]],
-}, {
+},/*4 уровень*/ {
 	i1 : 1,
 	z1 : 2,
 	i2 : 1,
@@ -66,7 +66,7 @@ var lvls = [{
 		 [0,0,0,0,0,0,0],
 		 [1,1,6,0,1,6,0],
 		 [2,0,0,0,1,4,0]],
-}, {
+},/*5 уровень*/ {
 	i1 : 2,
 	z1 : 2,
 	i2 : 2,
@@ -78,7 +78,7 @@ var lvls = [{
 		 [1,0,1,3,6,0,0],
 		 [1,0,1,0,1,4,0],
 		 [6,0,0,0,1,6,6]],
-}, {
+},/*6 уровень*/ {
 	i1 : 5,
 	z1 : 1,
 	i2 : 1,
@@ -96,7 +96,7 @@ var lvls = [{
 		z: 2,
 		direction : 'right',
 	}]
-}, {
+},/*7 уровень*/ {
 	i1 : 0,
 	z1 : 0,
 	i2 : 0,
@@ -119,7 +119,7 @@ var lvls = [{
 		z: 6,
 		direction : 'top',
 	}]
-}, {
+},/*8 уровень*/ {
 	i1 : 1,
 	z1 : 1,
 	i2 : 1,
@@ -142,6 +142,64 @@ var lvls = [{
 		z: 3,
 		direction : 'bottom',
 	}]
+},/*9 уровень*/ {
+	i1 : 4,
+	z1 : 1,
+	i2 : 0,
+	z2 : 3,
+	s : [[0,5,1,0,6,6,3],
+		 [0,1,6,0,0,0,0],
+		 [0,0,0,0,1,6,0],
+		 [0,0,1,0,1,0,0],
+		 [6,0,6,0,0,4,6],
+		 [2,6,6,0,0,0,6],
+		 [0,0,0,0,0,0,0]],
+	nps : [{
+		type: 'skeleton',
+		i: 0,
+		z: 0,
+		direction : 'bottom',
+	},{
+		type: 'skeleton',
+		i: 6,
+		z: 6,
+		direction : 'left',
+	}]
+},/*10 уровень*/ {
+	i1 : 1,
+	z1 : 3,
+	i2 : 5,
+	z2 : 3,
+	s : [[2,0,1,1,1,0,3],
+		 [6,0,0,0,0,0,6],
+		 [6,0,0,6,0,0,6],
+		 [0,0,0,1,0,0,0],
+		 [6,0,0,6,0,0,6],
+		 [1,0,0,0,0,0,0],
+		 [5,0,1,1,1,1,4]],
+	nps : [{
+		type: 'skeleton',
+		i: 3,
+		z: 0,
+		direction : 'right',
+	},{
+		type: 'skeleton',
+		i: 3,
+		z: 6,
+		direction : 'left',
+	}]
+},/*11 уровень*/ {
+	i1 : 1,
+	z1 : 3,
+	i2 : 5,
+	z2 : 3,
+	s : [[2,0,1,1,1,0,3,0,0],
+		 [0,0,0,0,0,0,0,0,0],
+		 [0,0,0,0,0,0,0,0,0],
+		 [0,0,0,1,0,0,0,0,0],
+		 [0,0,0,0,0,0,0,0,0],
+		 [1,0,0,0,0,0,0,0,0],
+		 [5,0,1,1,1,1,4,0,0]],
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -173,6 +231,7 @@ var mx1 = x1;
 var mx2 = x2;
 var my1 = y1;
 var my2 = y2;
+var text = document.getElementById('text');
 var canvas = document.getElementById('c1');
 canvas.width = s[0].length * 100;
 canvas.height = s.length * 100;
@@ -180,10 +239,29 @@ var ctx = canvas.getContext('2d');
 draw_(s,keyblack_x,keyblack_y,keygreen_x,keygreen_y);
 
 function draw_() {
+	canvas.width = s[0].length * 100;
+	canvas.height = s.length * 100;	
+	document.getElementById('text').style.height = canvas.height + 'px';
+	document.getElementById('menu').style.height = canvas.height - 50 + 'px';
+	document.getElementById('menu').style.paddingLeft = ((canvas.width - 300)/2) + 'px';
+	document.getElementById('menu').style.paddingRight = ((canvas.width - 300)/2) + 'px';  
+
+
+	if (nom_lvl < 10) {
+		canvas.style.backgroundColor = '#FF6347';
+	} else if (nom_lvl < 20){
+		canvas.style.backgroundColor = '#53b553';
+	}
+
+
 	for (var y = 0; y < s.length; y++) {
 		for (var t = 0; t < s[y].length; t++) {
 			if (s[y][t] == 1){
-				square_(y,t);
+				if (nom_lvl < 10) {
+					square_(y,t);
+				} else if (nom_lvl < 20) {
+					trees_(y,t);
+				}
 			}
 			if (s[y][t] == 2) {
 				keyblack_x = t*100;
@@ -232,6 +310,64 @@ function spikes_(y,t) {
 			ctx.lineTo(t*100+xs,y*100+25+ys);
 			ctx.fill();
 			ctx.stroke();
+			
+		}
+	}
+}
+
+function trees_(y,t) {
+	for (var i = 0; i < 100; i+=50) {
+		for (var x = 0; x < 100; x+=50) {
+			var m = Math.floor(Math.random() * 3 + 0);
+			switch (m){
+				case 0: ctx.fillStyle = '#32CD32';
+						ctx.lineStyle = '#006400';
+						ctx.beginPath();
+						ctx.moveTo(t*100+x+10,y*100+i+20);
+						ctx.lineTo(t*100+x+25,y*100+i);
+						ctx.lineTo(t*100+x+40,y*100+i+20);
+						ctx.lineTo(t*100+x+10,y*100+i+20);
+						ctx.fill();
+						ctx.stroke();
+						ctx.beginPath();
+						ctx.moveTo(t*100+x,y*100+i+40);
+						ctx.lineTo(t*100+x+25,y*100+i+20);
+						ctx.lineTo(t*100+x+50,y*100+i+40);
+						ctx.lineTo(t*100+x,y*100+i+40);
+						ctx.fill();
+						ctx.stroke();
+						ctx.fillStyle = '#8B4513';
+						ctx.lineStyle = 'black';
+						ctx.fillRect(t*100+x+20,y*100+i+40,10,10);
+				break;
+				case 1: ctx.fillStyle = '#32CD32';
+						ctx.lineStyle = '#006400';
+						ctx.beginPath();
+						ctx.arc(t*100+x+25,y*100+i+15,15,0,Math.PI * 2);
+						ctx.fill();
+						ctx.stroke();
+						ctx.beginPath();
+						ctx.fillStyle = '#8B4513';
+						ctx.lineStyle = 'black';
+						ctx.fillRect(t*100+x+20,y*100+i+30,10,20);	
+				break;	
+				case 2: ctx.fillStyle = '#32CD32';
+						ctx.lineStyle = '#006400';
+						ctx.beginPath();
+						ctx.moveTo(t*100+x+25,y*100+i);
+						ctx.lineTo(t*100+x+40,y*100+i+20);
+						ctx.lineTo(t*100+x+40,y*100+i+30);
+						ctx.lineTo(t*100+x+30,y*100+i+40);
+						ctx.lineTo(t*100+x+20,y*100+i+40);
+						ctx.lineTo(t*100+x+10,y*100+i+30);
+						ctx.lineTo(t*100+x+10,y*100+i+20);
+						ctx.lineTo(t*100+x+25,y*100+i);
+						ctx.fill();
+						ctx.stroke();
+						ctx.fillStyle = '#8B4513';
+						ctx.lineStyle = 'black';
+						ctx.fillRect(t*100+x+20,y*100+i+40,10,10);
+			}
 			
 		}
 	}
@@ -328,6 +464,8 @@ function sh(keyCode) {
 					document.getElementsByTagName('button')[i].style.display = 'none';
 				}
 			}
+
+	notification();
 }
 
 function repeat_(n) {
@@ -461,6 +599,15 @@ function backwards() {
 	for (var t = 0; t < document.getElementsByClassName('blvls').length; t++) {
 		document.getElementsByClassName('blvls')[t].style.display = 'block';
 	
+	}
+}
+
+function notification() {
+	if ((s[i1][z1] == 4)&&(keyblack == true)) {
+		text.innerHTML = '\nНужен чёрный ключ';
+	}
+	if ((s[i2][z2] == 5)&&(keygreen == true)) {
+		text.innerHTML = '\nНужен зелёный ключ';
 	}
 }
 
