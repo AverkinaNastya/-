@@ -18,6 +18,14 @@ var skeleton3 = new Image();
 skeleton3.src = 'img/Skeleton3.png';
 var skeleton4 = new Image();
 skeleton4.src = 'img/skeleton4.png';
+var wolf1 = new Image();
+wolf1.src = 'img/wolf1.png';
+var wolf2 = new Image();
+wolf2.src = 'img/wolf2.png';
+var wolf3 = new Image();
+wolf3.src = 'img/wolf3.png';
+var wolf4 = new Image();
+wolf4.src = 'img/wolf4.png';
 var lvls =  /*1 уровень*/[{
 	i1 : 0,
 	z1 : 0,
@@ -252,6 +260,133 @@ var lvls =  /*1 уровень*/[{
 		 [1,0,0,0,1,6,1,5],
 		 [6,0,1,0,6,0,0,0],
 		 [0,0,1,0,0,0,1,6]],
+},/*16 уровень*/ {
+	i1 : 1,
+	z1 : 2,
+	i2 : 2,
+	z2 : 3,
+	s : [[1,1,1,0,6,0,1,6],
+		 [3,6,0,0,0,0,6,4],
+		 [0,1,0,0,6,0,6,0],
+		 [0,0,0,6,1,0,1,0],
+		 [1,6,0,0,0,0,0,0],
+		 [1,1,0,6,0,6,0,1],
+		 [1,6,0,0,1,0,0,5],
+		 [6,2,0,0,6,0,1,6]],
+	nps : [{
+		type: 'wolf',
+		i: 4,
+		z: 2,
+		direction : 'right',
+	}]
+},/*17 уровень*/ {
+	i1 : 3,
+	z1 : 2,
+	i2 : 5,
+	z2 : 1,
+	s : [[1,6,0,0,0,6,1,6],
+		 [6,3,0,1,0,0,0,0],
+		 [0,1,0,1,0,1,0,2],
+		 [0,0,0,1,0,0,0,0],
+		 [6,6,1,6,0,0,0,6],
+		 [6,0,0,4,1,0,0,0],
+		 [1,0,6,1,0,0,1,5],
+		 [6,0,0,0,0,0,0,6]],
+	nps : [{
+		type: 'wolf',
+		i: 1,
+		z: 4,
+		direction : 'right',
+	},{
+		type: 'wolf',
+		i: 3,
+		z: 4,
+		direction : 'right',
+	}]
+},/*18 уровень*/ {
+	i1 : 1,
+	z1 : 6,
+	i2 : 5,
+	z2 : 2,
+	s : [[5,0,6,0,3,1,6,1],
+		 [6,0,1,0,6,0,0,6],
+		 [0,0,6,0,0,0,1,0],
+		 [1,0,0,0,0,0,0,0],
+		 [0,0,6,0,0,1,6,6],
+		 [0,1,0,0,0,0,0,0],
+		 [0,2,1,6,0,1,0,1],
+		 [1,6,0,0,0,4,0,0]],
+	nps : [{
+		type: 'wolf',
+		i: 3,
+		z: 7,
+		direction : 'left',
+	},{
+		type: 'wolf',
+		i: 5,
+		z: 7,
+		direction : 'left',
+	}]
+},/*19 уровень*/ {
+	i1 : 1,
+	z1 : 4,
+	i2 : 7,
+	z2 : 4,
+	s : [[0,0,0,1,1,0,0,3],
+		 [4,1,0,1,0,0,6,1],
+		 [6,0,0,6,6,0,0,0],
+		 [2,1,0,0,0,0,6,1],
+		 [0,6,1,0,0,0,0,0],
+		 [0,0,0,0,6,1,0,6],
+		 [6,0,1,1,0,1,5,6],
+		 [6,0,0,0,0,1,6,1]],
+	nps : [{
+		type: 'wolf',
+		i: 3,
+		z: 2,
+		direction : 'right',
+	},{
+		type: 'wolf',
+		i: 5,
+		z: 3,
+		direction : 'left',
+	}]
+},/*20 уровень*/ {
+	i1 : 6,
+	z1 : 3,
+	i2 : 6,
+	z2 : 4,
+	s : [[2,6,0,1,6,4,1,0],
+		 [0,0,0,6,0,0,6,0],
+		 [1,1,0,0,1,0,0,0],
+		 [0,0,6,0,1,1,6,0],
+		 [0,0,0,0,0,0,0,0],
+		 [0,1,0,1,0,6,0,0],
+		 [0,6,0,0,0,0,1,0],
+		 [0,3,1,1,1,6,5,0]],
+	nps : [{
+		type: 'wolf',
+		i: 3,
+		z: 0,
+		direction : 'bottom',
+	},{
+		type: 'wolf',
+		i: 0,
+		z: 7,
+		direction : 'bottom',
+	}]
+},/*21 уровень*/ {
+	i1 : 0,
+	z1 : 0,
+	i2 : 6,
+	z2 : 0,
+	s : [[0,0,0,1,0,0,0],
+		 [4,1,0,1,0,1,2],
+		 [0,1,0,0,0,1,1],
+		 [0,6,0,1,1,6,5],
+		 [0,0,0,0,0,0,0],
+		 [1,0,1,1,1,1,0],
+		 [0,0,0,0,1,3,0]],
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -303,6 +438,8 @@ function draw_() {
 		canvas.style.backgroundColor = '#FF6347';
 	} else if (nom_lvl < 20){
 		canvas.style.backgroundColor = '#53b553';
+	} else if (nom_lvl < 30){
+		canvas.style.backgroundColor = '#66A1D2';
 	}
 
 
@@ -644,7 +781,9 @@ function _nps_() {
 			nps[b].my = nps[b].i * 100;	
 			if (nps[b].type == 'skeleton') {
 				ctx.drawImage(skeleton1,nps[b].x + 25,nps[b].y);	
-			}	
+			} else if (nps[b].type == 'wolf'){
+				ctx.drawImage(wolf1,nps[b].x + 15, nps[b].y + 15);
+			}
 		}
 		
 		if (timer_ == false) {
@@ -661,6 +800,9 @@ function _nps_() {
 										if (nps[i].type == 'skeleton') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(skeleton2,nps[i].x + 25,nps[i].y);
+										} else if (nps[i].type == 'wolf') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(wolf2,nps[i].x + 15, nps[i].y + 15);
 										}
 									}
 						break;
@@ -673,6 +815,9 @@ function _nps_() {
 										if (nps[i].type == 'skeleton') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(skeleton4,nps[i].x + 25,nps[i].y);
+										} else if (nps[i].type == 'wolf') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(wolf4,nps[i].x + 15, nps[i].y + 15);
 										}
 									}
 						break;
@@ -685,6 +830,9 @@ function _nps_() {
 										if (nps[i].type == 'skeleton') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(skeleton1,nps[i].x + 25,nps[i].y);
+										} else if (nps[i].type == 'wolf') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(wolf1,nps[i].x + 15, nps[i].y + 15);
 										}
 									}
 						break;
@@ -697,10 +845,14 @@ function _nps_() {
 										if (nps[i].type == 'skeleton') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(skeleton3,nps[i].x + 25,nps[i].y);
+										} else if (nps[i].type == 'wolf') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(wolf3,nps[i].x + 15, nps[i].y + 15);
 										}
 									}
 						break;
 						}
+
 				}	
 			},1000);
 			timer_ = true;
@@ -733,7 +885,7 @@ function backwards() {
 	}
 }
 
-function notification(n) {
+function notification() {
 	text.innerHTML = '...';
 	if ((s[i1][z1] == 4)&&(keyblack == true)) {
 		text.innerHTML += '\nНужен чёрный ключ';
