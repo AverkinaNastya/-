@@ -450,6 +450,8 @@ function draw_() {
 					square_(y,t);
 				} else if (nom_lvl < 20) {
 					trees_(y,t);
+				} else if (nom_lvl < 30) {
+					seaweed(y,t);
 				}
 			}
 			if (s[y][t] == 2) {
@@ -637,6 +639,69 @@ function pond(y,t) {
 	ctx.lineTo(t*100+75,y*100+20);
 	ctx.stroke();
 		
+	ctx.lineWidth = 1;
+	ctx.lineCap = 'butt';
+}
+
+function seaweed(y,t) {
+	ctx.strokeStyle = 'green';
+	ctx.lineWidth = 5;
+	ctx.lineCap = 'round';
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+15,y*100+40);
+	ctx.lineTo(t*100+15,y*100+20);
+	ctx.lineTo(t*100+25,y*100+20);
+	ctx.lineTo(t*100+25,y*100);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+45,y*100);
+	ctx.lineTo(t*100+45,y*100+20);
+	ctx.lineTo(t*100+55,y*100+20);
+	ctx.lineTo(t*100+55,y*100+40);
+	ctx.lineTo(t*100+55,y*100+30);
+	ctx.lineTo(t*100+90,y*100);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+5,y*100+40);
+	ctx.lineTo(t*100+5,y*100+60);
+	ctx.lineTo(t*100+15,y*100+70);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+35,y*100+30);
+	ctx.lineTo(t*100+35,y*100+50);
+	ctx.lineTo(t*100+45,y*100+50);
+	ctx.lineTo(t*100+55,y*100+70);
+	ctx.lineTo(t*100+75,y*100+50);
+	ctx.lineTo(t*100+75,y*100+30);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+5,y*100+80);
+	ctx.lineTo(t*100+15,y*100+90);
+	ctx.lineTo(t*100+15,y*100+100);
+	ctx.lineTo(t*100+25,y*100+90);
+	ctx.lineTo(t*100+25,y*100+70);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+45,y*100+100);
+	ctx.lineTo(t*100+45,y*100+90);
+	ctx.lineTo(t*100+70,y*100+70);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(t*100+75,y*100+80);
+	ctx.lineTo(t*100+85,y*100+90);
+	ctx.lineTo(t*100+85,y*100+100);
+	ctx.lineTo(t*100+85,y*100+90);
+	ctx.lineTo(t*100+95,y*100+70);
+	ctx.lineTo(t*100+95,y*100+50);
+	ctx.stroke();
+
 	ctx.lineWidth = 1;
 	ctx.lineCap = 'butt';
 }
