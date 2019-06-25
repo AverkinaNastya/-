@@ -26,6 +26,10 @@ var wolf3 = new Image();
 wolf3.src = 'img/wolf3.png';
 var wolf4 = new Image();
 wolf4.src = 'img/wolf4.png';
+var mine_black = new Image();
+mine_black.src = 'img/mine_black.png';
+var mine_red = new Image();
+mine_red.src = 'img/mine_red.png';
 var lvls =  /*1 уровень*/[{
 	i1 : 0,
 	z1 : 0,
@@ -386,7 +390,7 @@ var lvls =  /*1 уровень*/[{
 		 [0,6,0,1,1,6,5],
 		 [0,0,0,0,0,0,0],
 		 [1,0,1,1,1,1,0],
-		 [0,0,0,0,1,3,0]],
+		 [0,0,0,7,1,3,0]],
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -418,6 +422,8 @@ var mx1 = x1;
 var mx2 = x2;
 var my1 = y1;
 var my2 = y2;
+var mines = [];
+var mines_nom = 0;
 var text = document.getElementById('text');
 var canvas = document.getElementById('c1');
 canvas.width = s[0].length * 100;
@@ -475,7 +481,19 @@ function draw_() {
 					spikes_(y,t);
 				}	else if (nom_lvl < 20) {
 					pond(y,t);
+				} else if (nom_lvl < 30) {
+					sea_urchin(y,t);
 				}
+			}
+			if (s[y][t] == 7) {
+				mines[mines_nom] = new Object();
+				mines[mines_nom].i = y;
+				mines[mines_nom].z = t;
+				mines[mines_nom].x = mines[mines_nom].z * 100;
+				mines[mines_nom].y = mines[mines_nom].i * 100;
+				mines[mines_nom].state = true;
+				mines[mines_nom].color = 'black';
+				mines_nom += 1;
 			}
 		}
 	}
@@ -706,6 +724,38 @@ function seaweed(y,t) {
 	ctx.lineCap = 'butt';
 }
 
+function sea_urchin(y,t) {
+	ctx.fillStyle = 'black';
+	ctx.strokeStyle = 'black';
+	ctx.beginPath();
+	ctx.arc(t*100 + 50,y*100 + 50,20,0,Math.PI * 2);
+	ctx.fill();
+	ctx.stroke();
+
+	for (var i = 0; i <= 100; i+=10) {
+		ctx.beginPath();
+		ctx.moveTo(t*100+50,y*100+50);
+		ctx.lineTo(t*100+i,y*100+5);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(t*100+50,y*100+50);
+		ctx.lineTo(t*100+i,y*100+95);
+		ctx.stroke();
+	}
+	for (var i = 0; i <= 100; i+=10) {
+		ctx.beginPath();
+		ctx.moveTo(t*100+50,y*100+50);
+		ctx.lineTo(t*100+5,y*100+i);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(t*100+50,y*100+50);
+		ctx.lineTo(t*100+95,y*100+i);
+		ctx.stroke();
+	}
+}
+
 function sh(keyCode) {
 	if ((keyCode*1 == 97)||(keyCode*1 == 1092)||(keyCode*1 == 100)||(keyCode*1 == 1074)||(keyCode*1 == 37)||(keyCode*1 == 39)){
 		left_right(keyCode);
@@ -820,6 +870,8 @@ function repeat_(n) {
 			mx2 = x2;
 			my1 = y1;
 			my2 = y2;
+			mines = [];
+			mines_nom = 0;
 			girlblack.src = 'img/girlblack1.png';
 			girlgreen.src = 'img/girlgreen1.png';
 
@@ -928,6 +980,14 @@ function _nps_() {
 		};
 }
 
+function mine_() {
+	for (var i = 0; i < mines_nom; i++) {
+		if (mines[i].state == true) {
+			ctx.drawImage(mine_black,mines[i].x+20,mines[i].y+20);
+		}
+	}
+}
+
 function but(lvl0,lvl) {
 	for (var i = 0; i < document.getElementsByTagName('button').length; i++) {
 		document.getElementsByTagName('button')[i].style.display = 'none';
@@ -961,6 +1021,9 @@ function notification() {
 }
 
 setInterval(function(){
+	if (mines.length != 0) {
+		mine_();
+	}
 	if (s[i1][z1] == 2) {
 		keyblack = false;
 	}
@@ -1010,6 +1073,8 @@ setInterval(function(){
 			my2 = y2;
 			motion = 0;
 			pos = 0;
+			mines = [];
+			mines_nom = 0;
 			ctx.clearRect(0,0,canvas.width,canvas.height);
 			draw_(s);
 		}
