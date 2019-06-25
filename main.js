@@ -26,10 +26,14 @@ var wolf3 = new Image();
 wolf3.src = 'img/wolf3.png';
 var wolf4 = new Image();
 wolf4.src = 'img/wolf4.png';
-var mine_black = new Image();
-mine_black.src = 'img/mine_black.png';
-var mine_red = new Image();
-mine_red.src = 'img/mine_red.png';
+var jellyfish1 = new Image();
+jellyfish1.src = 'img/jellyfish1.png';
+var jellyfish2 = new Image();
+jellyfish2.src = 'img/jellyfish2.png';
+var jellyfish3 = new Image();
+jellyfish3.src = 'img/jellyfish3.png';
+var jellyfish4 = new Image();
+jellyfish4.src = 'img/jellyfish4.png';
 var lvls =  /*1 уровень*/[{
 	i1 : 0,
 	z1 : 0,
@@ -380,17 +384,79 @@ var lvls =  /*1 уровень*/[{
 		direction : 'bottom',
 	}]
 },/*21 уровень*/ {
-	i1 : 0,
-	z1 : 0,
-	i2 : 6,
-	z2 : 0,
-	s : [[0,0,0,1,0,0,0],
-		 [4,0,0,0,0,1,2],
-		 [0,0,0,7,0,1,1],
-		 [0,6,0,0,0,6,5],
-		 [0,0,0,0,0,0,7],
-		 [0,0,0,0,0,1,0],
-		 [0,0,7,7,0,3,0]],
+	i1 : 1,
+	z1 : 1,
+	i2 : 4,
+	z2 : 8,
+	s : [[1,1,6,0,1,0,0,0,1],
+		 [1,0,0,0,0,0,0,0,1],
+		 [1,6,0,0,6,1,6,2,0],
+		 [0,4,0,0,0,0,6,1,6],
+		 [0,1,1,0,6,1,0,0,1],
+		 [0,5,1,0,0,0,0,0,6],
+		 [0,6,0,0,0,6,1,6,3],
+		 [0,0,0,0,0,0,0,0,0],
+		 [1,0,1,1,1,6,0,1,1]],
+},/*22 уровень*/ {
+	i1 : 1,
+	z1 : 1,
+	i2 : 7,
+	z2 : 7,
+	s : [[1,6,0,1,0,0,0,6,1],
+		 [1,0,0,0,0,6,0,0,0],
+		 [0,0,0,1,0,1,0,1,0],
+		 [6,0,1,6,0,0,1,3,0],
+		 [6,0,0,0,1,4,0,0,1],
+		 [2,0,1,5,0,6,1,1,1],
+		 [1,0,0,1,0,1,0,0,0],
+		 [1,0,0,0,0,6,0,0,1],
+		 [1,1,0,6,0,0,0,6,1]],
+	nps : [{
+		type: 'jellyfish',
+		i: 2,
+		z: 0,
+		direction : 'right',
+	},{
+		type: 'jellyfish',
+		i: 2,
+		z: 6,
+		direction : 'top',
+	},{
+		type: 'jellyfish',
+		i: 7,
+		z: 1,
+		direction : 'left',
+	},{
+		type: 'jellyfish',
+		i: 6,
+		z: 6,
+		direction : 'bottom',
+	}]
+},/*23 уровень*/ {
+	i1 : 1,
+	z1 : 4,
+	i2 : 5,
+	z2 : 1,
+	s : [[1,0,1,6,6,1,6,1,1],
+		 [3,0,0,0,0,0,5,1,4],
+		 [1,0,6,1,1,0,1,6,0],
+		 [6,0,0,1,6,0,1,0,0],
+		 [1,6,0,0,0,0,0,0,0],
+		 [6,0,6,0,1,0,6,0,6],
+		 [0,0,1,0,6,1,0,0,0],
+		 [0,1,0,0,0,0,0,1,0],
+		 [0,0,0,6,6,1,1,6,2]],
+	nps : [{
+		type: 'jellyfish',
+		i: 0,
+		z: 1,
+		direction : 'bottom',
+	},{
+		type: 'jellyfish',
+		i: 4,
+		z: 2,
+		direction : 'left',
+	}]
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -424,8 +490,6 @@ var mx2 = x2;
 var my1 = y1;
 var my2 = y2;
 var nom = [];
-var mines = [];
-var mines_nom = 0;
 var text = document.getElementById('text');
 var canvas = document.getElementById('c1');
 canvas.width = s[0].length * 100;
@@ -485,17 +549,7 @@ function draw_() {
 					pond(y,t);
 				} else if (nom_lvl < 30) {
 					sea_urchin(y,t);
-				}
-			}
-			if (s[y][t] == 7) {
-				mines[mines_nom] = new Object();
-				mines[mines_nom].i = y;
-				mines[mines_nom].z = t;
-				mines[mines_nom].x = mines[mines_nom].z * 100;
-				mines[mines_nom].y = mines[mines_nom].i * 100;
-				mines[mines_nom].state = true;
-				mines[mines_nom].color = 'black';
-				mines_nom += 1;
+				} 
 			}
 		}
 	}
@@ -853,55 +907,6 @@ function sh(keyCode) {
 	notification();
 }
 
-function mine_() {
-	for (var i = 0; i < mines_nom; i++) {
-		if (mines[i].state == true) {
-			ctx.drawImage(mine_black,mines[i].x+20,mines[i].y+20);
-		}
-		for (var u = -1; u < 2; u++) {
-			if ((mines[i].state == true)&&((((i1 == mines[i].i - 1)&&(z1 == mines[i].z + u))||((i2 == mines[i].i - 1)&&(z2 == mines[i].z + u)))||(((i1 == mines[i].i + 1)&&(z1 == mines[i].z + u))||((i2 == mines[i].i + 1)&&(z2 == mines[i].z + u)))||((i1 == mines[i].i)&&(z1 == mines[i].z - 1))||((i1 == mines[i].i)&&(z1 == mines[i].z + 1))||((i2 == mines[i].i)&&(z2 == mines[i].z + 1))||((i2 == mines[i].i)&&(z2 == mines[i].z - 1)))) {
-				mines[i].state = false;
-				alert(1);
-				nom.push(i);
-				var timer_mine = setTimeout(explosion,2000);
-			}
-		}
-	}
-}
-
-function explosion() {
-	alert(nom[0]);
-	for (var u = -1; u < 2; u++) {
-		if((((i1 == mines[nom[0]].i - 1)&&(z1 == mines[nom[0]].z + u))||((i2 == mines[nom[0]].i - 1)&&(z2 == mines[nom[0]].z + u)))||(((i1 == mines[nom[0]].i + 1)&&(z1 == mines[nom[0]].z + u))||((i2 == mines[nom[0]].i + 1)&&(z2 == mines[nom[0]].z + u)))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z - 1))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z + 1))||((i2 == mines[nom[0]].i + 1)&&(z2 == mines[nom[0]].z + u)))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z - 1))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z + 1))||((i2 == mines[nom[0]].i)&&(z2 == mines[nom[0]].z + 1))||((i2 == mines[nom[0]].i)&&(z2 == mines[nom[0]].z - 1))){
-		
-		var element = document.createElement('img');
-		element.className = 'img';
-		element.style.top = mines[nom[0]].y - 100 + 'px';
-		element.style.left = mines[nom[0]].x - 100 + 'px';
-		element.src = 'img/sprite1.jpg';
-		document.body.appendChild(element);
-		setTimeout(function () {
-			document.body.removeChild(element);
-			repeat_(nom_lvl);
-		},500);
-
-		u = 2;
-		} else if (u == 1) {
-			var element = document.createElement('img');
-			element.className = 'img';
-			element.style.top = mines[nom[0]].y - 100 + 'px';
-			element.style.left = mines[nom[0]].x - 100 + 'px';
-			element.src = 'img/sprite1.jpg';
-			document.body.appendChild(element);
-			ctx.clearRect(mines[nom[0]].x,mines[nom[0]].y,100,100);
-			setTimeout(function () {
-				document.body.removeChild(element);
-			},500);
-		}
-	}
-	nom.splice(0, 1);
-}
-
 function repeat_(n) {
 			nom_lvl = n;
 			i1 = lvls[nom_lvl].i1;
@@ -921,9 +926,6 @@ function repeat_(n) {
 			mx2 = x2;
 			my1 = y1;
 			my2 = y2;
-			mines = [];
-			mines_nom = 0;
-			clearTimeout(timer_mine);
 			girlblack.src = 'img/girlblack1.png';
 			girlgreen.src = 'img/girlgreen1.png';
 
@@ -952,6 +954,8 @@ function _nps_() {
 				ctx.drawImage(skeleton1,nps[b].x + 25,nps[b].y);	
 			} else if (nps[b].type == 'wolf'){
 				ctx.drawImage(wolf1,nps[b].x + 15, nps[b].y + 15);
+			} else if (nps[b].type == 'jellyfish') {
+				ctx.drawImage(jellyfish1,nps[b].x + 12,nps[b].y)
 			}
 		}
 		
@@ -972,7 +976,9 @@ function _nps_() {
 										} else if (nps[i].type == 'wolf') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(wolf2,nps[i].x + 15, nps[i].y + 15);
-										}
+										} else if (nps[i].type == 'jellyfish') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(jellyfish2,nps[i].x, nps[i].y + 12);}
 									}
 						break;
 						case 'left': if ((nps[i].x == 0)||(s[nps[i].i][nps[i].z - 1] == 1)||(s[nps[i].i][nps[i].z - 1] == 6)) {
@@ -987,7 +993,9 @@ function _nps_() {
 										} else if (nps[i].type == 'wolf') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(wolf4,nps[i].x + 15, nps[i].y + 15);
-										}
+										} else if (nps[i].type == 'jellyfish') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(jellyfish4,nps[i].x, nps[i].y + 12);}
 									}
 						break;
 						case 'bottom': if ((nps[i].y + 100 == canvas.height)||(s[nps[i].i + 1][nps[i].z] == 1)||(s[nps[i].i + 1][nps[i].z] == 6)) {
@@ -1002,7 +1010,9 @@ function _nps_() {
 										} else if (nps[i].type == 'wolf') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(wolf1,nps[i].x + 15, nps[i].y + 15);
-										}
+										} else if (nps[i].type == 'jellyfish') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(jellyfish1,nps[i].x + 12, nps[i].y);}
 									}
 						break;
 						case 'top': if ((nps[i].y== 0)||(s[nps[i].i - 1][nps[i].z] == 1)||(s[nps[i].i - 1][nps[i].z] == 6)) {
@@ -1017,7 +1027,9 @@ function _nps_() {
 										} else if (nps[i].type == 'wolf') {
 											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
 											ctx.drawImage(wolf3,nps[i].x + 15, nps[i].y + 15);
-										}
+										} else if (nps[i].type == 'jellyfish') {
+											ctx.clearRect(nps[i].mx,nps[i].my,100,100);
+											ctx.drawImage(jellyfish3,nps[i].x + 12, nps[i].y);}
 									}
 						break;
 						}
@@ -1066,9 +1078,6 @@ function notification() {
 }
 
 setInterval(function(){
-	if (mines.length != 0) {
-		mine_();
-	}
 	if (s[i1][z1] == 2) {
 		keyblack = false;
 	}
@@ -1127,14 +1136,6 @@ setInterval(function(){
 
 	if ((s[i1][z1] == 6)||(s[i2][z2] == 6)||((x1 == x2)&&(y1 == y2))) {
 		repeat_(nom_lvl);
-	}
-
-	if ((s[i1][z1] == 7)) {
-		for (var i = 0; i < mines.length; i++) {
-			if ((((mines[i].i == i1)&&(mines[i].z == z1))||((mines[i].i == i2)&&(mines[i].z == z2)))&&(mines[i].state == true)) {
-				repeat_(nom_lvl);
-			}
-		}
 	}
 	
 
