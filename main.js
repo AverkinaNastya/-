@@ -385,12 +385,12 @@ var lvls =  /*1 уровень*/[{
 	i2 : 6,
 	z2 : 0,
 	s : [[0,0,0,1,0,0,0],
-		 [4,1,0,1,0,1,2],
-		 [0,1,0,0,0,1,1],
-		 [0,6,0,1,1,6,5],
-		 [0,0,0,0,0,0,0],
-		 [1,0,1,1,1,1,0],
-		 [0,0,0,7,1,3,0]],
+		 [4,0,0,0,0,1,2],
+		 [0,0,0,7,0,1,1],
+		 [0,6,0,0,0,6,5],
+		 [0,0,0,0,0,0,7],
+		 [0,0,0,0,0,1,0],
+		 [0,0,7,7,0,3,0]],
 }];
 var nom_lvl = 0;
 var motion = 0;
@@ -413,6 +413,7 @@ var doorblack_y;
 var doorgreen_x;
 var doorgreen_y;
 var nps = [];
+var timer_mine;
 var timer_ = false;
 var x1 = z1 * 100;
 var y1 = i1 * 100;
@@ -422,6 +423,7 @@ var mx1 = x1;
 var mx2 = x2;
 var my1 = y1;
 var my2 = y2;
+var nom = [];
 var mines = [];
 var mines_nom = 0;
 var text = document.getElementById('text');
@@ -851,6 +853,55 @@ function sh(keyCode) {
 	notification();
 }
 
+function mine_() {
+	for (var i = 0; i < mines_nom; i++) {
+		if (mines[i].state == true) {
+			ctx.drawImage(mine_black,mines[i].x+20,mines[i].y+20);
+		}
+		for (var u = -1; u < 2; u++) {
+			if ((mines[i].state == true)&&((((i1 == mines[i].i - 1)&&(z1 == mines[i].z + u))||((i2 == mines[i].i - 1)&&(z2 == mines[i].z + u)))||(((i1 == mines[i].i + 1)&&(z1 == mines[i].z + u))||((i2 == mines[i].i + 1)&&(z2 == mines[i].z + u)))||((i1 == mines[i].i)&&(z1 == mines[i].z - 1))||((i1 == mines[i].i)&&(z1 == mines[i].z + 1))||((i2 == mines[i].i)&&(z2 == mines[i].z + 1))||((i2 == mines[i].i)&&(z2 == mines[i].z - 1)))) {
+				mines[i].state = false;
+				alert(1);
+				nom.push(i);
+				var timer_mine = setTimeout(explosion,2000);
+			}
+		}
+	}
+}
+
+function explosion() {
+	alert(nom[0]);
+	for (var u = -1; u < 2; u++) {
+		if((((i1 == mines[nom[0]].i - 1)&&(z1 == mines[nom[0]].z + u))||((i2 == mines[nom[0]].i - 1)&&(z2 == mines[nom[0]].z + u)))||(((i1 == mines[nom[0]].i + 1)&&(z1 == mines[nom[0]].z + u))||((i2 == mines[nom[0]].i + 1)&&(z2 == mines[nom[0]].z + u)))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z - 1))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z + 1))||((i2 == mines[nom[0]].i + 1)&&(z2 == mines[nom[0]].z + u)))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z - 1))||((i1 == mines[nom[0]].i)&&(z1 == mines[nom[0]].z + 1))||((i2 == mines[nom[0]].i)&&(z2 == mines[nom[0]].z + 1))||((i2 == mines[nom[0]].i)&&(z2 == mines[nom[0]].z - 1))){
+		
+		var element = document.createElement('img');
+		element.className = 'img';
+		element.style.top = mines[nom[0]].y - 100 + 'px';
+		element.style.left = mines[nom[0]].x - 100 + 'px';
+		element.src = 'img/sprite1.jpg';
+		document.body.appendChild(element);
+		setTimeout(function () {
+			document.body.removeChild(element);
+			repeat_(nom_lvl);
+		},500);
+
+		u = 2;
+		} else if (u == 1) {
+			var element = document.createElement('img');
+			element.className = 'img';
+			element.style.top = mines[nom[0]].y - 100 + 'px';
+			element.style.left = mines[nom[0]].x - 100 + 'px';
+			element.src = 'img/sprite1.jpg';
+			document.body.appendChild(element);
+			ctx.clearRect(mines[nom[0]].x,mines[nom[0]].y,100,100);
+			setTimeout(function () {
+				document.body.removeChild(element);
+			},500);
+		}
+	}
+	nom.splice(0, 1);
+}
+
 function repeat_(n) {
 			nom_lvl = n;
 			i1 = lvls[nom_lvl].i1;
@@ -872,6 +923,7 @@ function repeat_(n) {
 			my2 = y2;
 			mines = [];
 			mines_nom = 0;
+			clearTimeout(timer_mine);
 			girlblack.src = 'img/girlblack1.png';
 			girlgreen.src = 'img/girlgreen1.png';
 
@@ -980,13 +1032,6 @@ function _nps_() {
 		};
 }
 
-function mine_() {
-	for (var i = 0; i < mines_nom; i++) {
-		if (mines[i].state == true) {
-			ctx.drawImage(mine_black,mines[i].x+20,mines[i].y+20);
-		}
-	}
-}
 
 function but(lvl0,lvl) {
 	for (var i = 0; i < document.getElementsByTagName('button').length; i++) {
@@ -1083,6 +1128,15 @@ setInterval(function(){
 	if ((s[i1][z1] == 6)||(s[i2][z2] == 6)||((x1 == x2)&&(y1 == y2))) {
 		repeat_(nom_lvl);
 	}
+
+	if ((s[i1][z1] == 7)) {
+		for (var i = 0; i < mines.length; i++) {
+			if ((((mines[i].i == i1)&&(mines[i].z == z1))||((mines[i].i == i2)&&(mines[i].z == z2)))&&(mines[i].state == true)) {
+				repeat_(nom_lvl);
+			}
+		}
+	}
+	
 
 	for (var i = 0; i < nps.length; i++) {
 		if (((x2 == nps[i].x)&&(y2 == nps[i].y)) || ((x1 == nps[i].x)&&(y1 == nps[i].y))) {
